@@ -12,7 +12,7 @@ on:
 
 env:
   GO_VERSION: "1.23"
-  REGISTRY: us-docker.pkg.dev
+  REGISTRY: asia-south1-docker.pkg.dev
   IMAGE: cgs-api
 
 jobs:

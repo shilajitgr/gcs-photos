@@ -12,7 +12,7 @@ on:
 
 env:
   NODE_VERSION: "20"
-  REGISTRY: us-docker.pkg.dev
+  REGISTRY: asia-south1-docker.pkg.dev
   IMAGE: cgs-processing
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
     name: Push to Artifact Registry
     runs-on: ubuntu-latest
     needs: [build]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true' }}
     permissions:
       contents: read
       id-token: write
