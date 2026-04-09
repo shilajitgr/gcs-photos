@@ -1,0 +1,81 @@
+services:
+  firestore-emulator:
+    image: google/cloud-sdk:latest
+    command: >
+      bash -c "
+        gcloud emulators firestore start --host-port=0.0.0.0:8086 --project=cgs-photos-test
+      "
+    ports:
+      - "8086:8086"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  pubsub-emulator:
+    image: google/cloud-sdk:latest
+    command: >
+      bash -c "
+        gcloud emulators pubsub start --host-port=0.0.0.0:8085 --project=cgs-photos-test
+      "
+    ports:
+      - "8085:8085"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  fake-gcs-server:
+    image: fsouza/fake-gcs-server:latest
+    command: ["-scheme", "http", "-port", "4443", "-public-host", "fake-gcs-server:4443"]
+    ports:
+      - "4443:4443"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4443/storage/v1/b"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  cgs-api:
+    build:
+      context: ../../server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - GCP_PROJECT_ID=cgs-photos-test
+      - FIRESTORE_EMULATOR_HOST=firestore-emulator:8086
+      - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
+      - STORAGE_EMULATOR_HOST=http://fake-gcs-server:4443
+    depends_on:
+      firestore-emulator:
+        condition: service_healthy
+      pubsub-emulator:
+        condition: service_healthy
+      fake-gcs-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  cgs-processing:
+    build:
+      context: ../../processing
+      dockerfile: Dockerfile
+    environment:
+      - GCP_PROJECT_ID=cgs-photos-test
+      - FIRESTORE_EMULATOR_HOST=firestore-emulator:8086
+      - PUBSUB_EMULATOR_HOST=pubsub-emulator:8085
+      - STORAGE_EMULATOR_HOST=http://fake-gcs-server:4443
+    depends_on:
+      firestore-emulator:
+        condition: service_healthy
+      pubsub-emulator:
+        condition: service_healthy
+      fake-gcs-server:
+        condition: service_healthy

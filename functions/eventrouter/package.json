@@ -1,0 +1,28 @@
+{
+  "name": "@cgs-photos/eventrouter",
+  "version": "0.1.0",
+  "description": "Cloud Functions Gen 2 event glue — bridges Eventarc GCS events to Pub/Sub",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx functions-framework --target=eventRouter --source=dist/",
+    "deploy": "gcloud functions deploy event-router --gen2 --runtime=nodejs20 --region=us-central1 --trigger-event-filters=\"type=google.cloud.storage.object.v1.finalized\" --entry-point=eventRouter --source=.",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "@google-cloud/pubsub": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

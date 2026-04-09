@@ -1,0 +1,80 @@
+# ==========================
+# Go
+# ==========================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# ==========================
+# Node.js
+# ==========================
+node_modules/
+dist/
+*.tsbuildinfo
+
+# ==========================
+# Flutter / Dart
+# ==========================
+app/.dart_tool/
+app/.packages
+app/build/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+*.g.dart
+
+# ==========================
+# Terraform
+# ==========================
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.lock.hcl
+
+# ==========================
+# Environment & Secrets
+# ==========================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# ==========================
+# IDE & Editor
+# ==========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==========================
+# OS
+# ==========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================
+# Docker
+# ==========================
+docker-compose.override.yml
+
+# ==========================
+# Test / Coverage
+# ==========================
+coverage/
+*.cover
+*.coverage
+htmlcov/
+test/e2e/fixtures/*.jpg
+test/e2e/fixtures/*.heic
+test/e2e/fixtures/*.png

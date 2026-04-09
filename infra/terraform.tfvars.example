@@ -1,0 +1,10 @@
+project_id  = "gcs-p-492809"
+region      = "us-central1"
+environment = "dev"
+domain_name = "photos.example.com"
+
+api_image        = "us-central1-docker.pkg.dev/gcs-p-492809/cgs-photos/api:latest"
+processing_image = "us-central1-docker.pkg.dev/gcs-p-492809/cgs-photos/processing:latest"
+proxy_image      = "us-central1-docker.pkg.dev/gcs-p-492809/cgs-photos/proxy:latest"
+
+notification_email = "alerts@example.com"
