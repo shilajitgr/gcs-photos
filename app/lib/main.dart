@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app.dart';
+import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -16,7 +17,9 @@ void callbackDispatcher() {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await Workmanager().initialize(
     callbackDispatcher,

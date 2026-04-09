@@ -1,7 +1,7 @@
 /// Application-wide configuration constants.
 abstract final class AppConfig {
   /// Base URL for the Cloud Run API.
-  static const String apiBaseUrl = 'https://api.cgsphotos.example.com';
+  static const String apiBaseUrl = 'https://cgs-api-977909388234.asia-south1.run.app';
 
   /// Maximum thumbnail cache size in bytes (500 MB).
   static const int maxThumbnailCacheBytes = 500 * 1024 * 1024;

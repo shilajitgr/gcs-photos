@@ -32,24 +32,29 @@ class ApiService {
     int limit = AppConfig.syncPageSize,
   }) {
     return _dio.get(
-      '/photos',
+      '/api/v1/photos',
       queryParameters: {'page': page, 'limit': limit},
     );
   }
 
   /// Fetch a single photo's metadata by UID.
   Future<Response<dynamic>> getPhoto(String uid) {
-    return _dio.get('/photos/$uid');
+    return _dio.get('/api/v1/photos/$uid');
   }
 
   /// Request a signed upload URL from the API.
   Future<Response<dynamic>> getUploadUrl({
     required String fileName,
     required String contentType,
+    required String bucket,
   }) {
     return _dio.post(
-      '/uploads/url',
-      data: {'fileName': fileName, 'contentType': contentType},
+      '/api/v1/photos/upload-url',
+      data: {
+        'fileName': fileName,
+        'contentType': contentType,
+        'bucket': bucket,
+      },
     );
   }
 
@@ -63,7 +68,7 @@ class ApiService {
     int limit = AppConfig.syncPageSize,
   }) {
     return _dio.get(
-      '/sync',
+      '/api/v1/photos/sync',
       queryParameters: {
         'mode': mode,
         if (cursor != null) 'cursor': cursor,
