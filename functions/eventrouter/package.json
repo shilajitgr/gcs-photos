@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npx functions-framework --target=eventRouter --source=dist/",
-    "deploy": "gcloud functions deploy event-router --gen2 --runtime=nodejs20 --region=us-central1 --trigger-event-filters=\"type=google.cloud.storage.object.v1.finalized\" --entry-point=eventRouter --source=.",
+    "deploy": "gcloud functions deploy event-router --gen2 --runtime=nodejs20 --region=asia-south1 --trigger-event-filters=\"type=google.cloud.storage.object.v1.finalized\" --entry-point=eventRouter --source=.",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit"
   },

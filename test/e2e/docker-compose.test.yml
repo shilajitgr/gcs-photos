@@ -35,10 +35,11 @@ services:
     ports:
       - "4443:4443"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4443/storage/v1/b"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:4443/storage/v1/b || curl -sf http://localhost:4443/storage/v1/b || exit 1"]
       interval: 5s
-      timeout: 3s
-      retries: 10
+      timeout: 5s
+      retries: 15
+      start_period: 10s
 
   cgs-api:
     build:
@@ -59,12 +60,6 @@ services:
         condition: service_healthy
       fake-gcs-server:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
   cgs-processing:
     build:
       context: ../../processing
