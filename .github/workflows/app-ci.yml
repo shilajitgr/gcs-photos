@@ -30,6 +30,10 @@ jobs:
         working-directory: app
         run: flutter pub get
 
+      - name: Generate Drift code
+        working-directory: app
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Run analyzer
         working-directory: app
         run: flutter analyze
@@ -49,6 +53,10 @@ jobs:
       - name: Install dependencies
         working-directory: app
         run: flutter pub get
+
+      - name: Generate Drift code
+        working-directory: app
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Run tests
         working-directory: app
@@ -76,6 +84,10 @@ jobs:
         working-directory: app
         run: flutter pub get
 
+      - name: Generate Drift code
+        working-directory: app
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Build APK
         working-directory: app
         run: flutter build apk
@@ -102,6 +114,10 @@ jobs:
       - name: Install dependencies
         working-directory: app
         run: flutter pub get
+
+      - name: Generate Drift code
+        working-directory: app
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build web
         working-directory: app

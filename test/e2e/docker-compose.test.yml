@@ -1,31 +1,33 @@
 services:
   firestore-emulator:
-    image: google/cloud-sdk:latest
+    image: google/cloud-sdk:emulators
     command: >
       bash -c "
-        gcloud emulators firestore start --host-port=0.0.0.0:8086 --project=cgs-photos-test
+        gcloud beta emulators firestore start --host-port=0.0.0.0:8086 --project=cgs-photos-test
       "
     ports:
       - "8086:8086"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8086/"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8086/ || exit 1"]
       interval: 5s
-      timeout: 3s
-      retries: 10
+      timeout: 5s
+      retries: 15
+      start_period: 10s
 
   pubsub-emulator:
-    image: google/cloud-sdk:latest
+    image: google/cloud-sdk:emulators
     command: >
       bash -c "
-        gcloud emulators pubsub start --host-port=0.0.0.0:8085 --project=cgs-photos-test
+        gcloud beta emulators pubsub start --host-port=0.0.0.0:8085 --project=cgs-photos-test
       "
     ports:
       - "8085:8085"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8085/"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8085/ || exit 1"]
       interval: 5s
-      timeout: 3s
-      retries: 10
+      timeout: 5s
+      retries: 15
+      start_period: 10s
 
   fake-gcs-server:
     image: fsouza/fake-gcs-server:latest

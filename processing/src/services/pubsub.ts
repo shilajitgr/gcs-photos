@@ -48,7 +48,7 @@ export function parseJobMessage(data: string): ProcessingJobMessage {
     userId: String(msg.userId),
     bucketName: String(msg.bucketName),
     objectPath: String(msg.objectPath),
-    mimeType: String(msg.mimeType ?? "image/jpeg"),
+    mimeType: typeof msg.mimeType === "string" ? msg.mimeType : "image/jpeg",
     fileSizeBytes: Number(msg.fileSizeBytes ?? 0),
   };
 }
