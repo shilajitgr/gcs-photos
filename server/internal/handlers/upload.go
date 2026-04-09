@@ -54,6 +54,18 @@ func (h *UploadHandler) GenerateUploadURL(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	// Publish upload event so downstream processors know about the file.
+	// This is best-effort — the upload URL is still returned even if publishing fails,
+	// since the event glue Cloud Function will also trigger on GCS finalization.
+	if h.PubSub != nil {
+		_ = h.PubSub.PublishUploadEvent(r.Context(), services.UploadEvent{
+			UserID:      userID,
+			Bucket:      req.Bucket,
+			ObjectPath:  objectPath,
+			ContentType: req.ContentType,
+		})
+	}
+
 	response.JSON(w, http.StatusOK, map[string]string{
 		"uploadURL":  signedURL,
 		"objectPath": objectPath,
