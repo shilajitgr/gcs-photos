@@ -19,7 +19,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.7"
+          terraform_version: "1.5"
 
       - name: Terraform Format Check
         working-directory: infra
@@ -37,7 +37,7 @@ jobs:
     name: Terraform Plan
     runs-on: ubuntu-latest
     needs: [validate]
-    if: github.event_name == 'pull_request' && secrets.WIF_PROVIDER != ''
+    if: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
       id-token: write
@@ -47,7 +47,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.7"
+          terraform_version: "1.5"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -93,7 +93,7 @@ jobs:
     name: Terraform Apply
     runs-on: ubuntu-latest
     needs: [validate]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.WIF_PROVIDER != ''
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     environment: production
     permissions:
       contents: read
@@ -103,7 +103,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.7"
+          terraform_version: "1.5"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
