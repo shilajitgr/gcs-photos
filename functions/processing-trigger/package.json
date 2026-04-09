@@ -1,0 +1,26 @@
+{
+  "name": "@cgs-photos/processing-trigger",
+  "version": "0.1.0",
+  "description": "Cloud Function that triggers processing Cloud Run Job from Pub/Sub messages",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx functions-framework --target=processingTrigger --source=dist/",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "@google-cloud/run": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
