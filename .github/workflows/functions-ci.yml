@@ -96,6 +96,7 @@ jobs:
             --runtime=nodejs20 \
             --region=${{ secrets.GCP_REGION }} \
             --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" \
+            --trigger-event-filters="bucket=${{ secrets.GCS_UPLOADS_BUCKET }}" \
             --entry-point=eventRouter \
             --service-account=cgs-eventrouter-sa@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
             --set-env-vars="GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},PUBSUB_TOPIC=photo-uploads" \
