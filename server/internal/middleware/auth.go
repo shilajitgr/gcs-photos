@@ -13,10 +13,20 @@ type contextKey string
 
 const userIDKey contextKey = "userID"
 
+// AuthVerifier abstracts Firebase token verification for testability.
+type AuthVerifier interface {
+	VerifyIDToken(ctx context.Context, idToken string) (*firebase.Token, error)
+}
+
 // Auth returns middleware that verifies Firebase Auth tokens.
-func Auth(authClient *firebase.Client) func(http.Handler) http.Handler {
+func Auth(authClient AuthVerifier) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if authClient == nil {
+				response.Error(w, http.StatusServiceUnavailable, "auth not configured")
+				return
+			}
+
 			authHeader := r.Header.Get("Authorization")
 			if authHeader == "" {
 				response.Error(w, http.StatusUnauthorized, "missing authorization header")

@@ -34,11 +34,14 @@ func main() {
 	// Firebase Auth
 	firebaseApp, err := firebase.NewApp(ctx, nil)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("failed to initialize firebase app")
+		logger.Warn().Err(err).Msg("failed to initialize firebase app — auth will be unavailable")
 	}
-	authClient, err := firebaseApp.Auth(ctx)
-	if err != nil {
-		logger.Fatal().Err(err).Msg("failed to initialize firebase auth client")
+	var authClient middleware.AuthVerifier
+	if firebaseApp != nil {
+		authClient, err = firebaseApp.Auth(ctx)
+		if err != nil {
+			logger.Warn().Err(err).Msg("failed to initialize firebase auth client")
+		}
 	}
 
 	// Firestore

@@ -35,7 +35,7 @@ resource "google_cloud_run_v2_service" "api" {
       }
 
       env {
-        name  = "PROJECT_ID"
+        name  = "GCP_PROJECT_ID"
         value = var.project_id
       }
 
@@ -105,7 +105,7 @@ resource "google_cloud_run_v2_service" "proxy" {
       }
 
       env {
-        name  = "PROJECT_ID"
+        name  = "GCP_PROJECT_ID"
         value = var.project_id
       }
 
@@ -144,8 +144,8 @@ resource "google_cloud_run_v2_job" "processing" {
   labels = var.labels
 
   template {
-    parallelism = 10
-    task_count  = 10
+    parallelism = 5
+    task_count  = 5
 
     template {
       service_account = var.processing_sa_email
