@@ -73,9 +73,10 @@ module "artifact_registry" {
 module "firestore" {
   source = "./modules/firestore"
 
-  project_id = var.project_id
-  region     = var.region
-  labels     = local.labels
+  project_id          = var.project_id
+  region              = var.region
+  firestore_location  = var.firestore_location
+  labels              = local.labels
 
   depends_on = [google_project_service.apis]
 }

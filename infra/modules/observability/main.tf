@@ -23,6 +23,7 @@ locals {
 # ── Uptime Check — API /healthz ────────────────────────────────────────────
 
 resource "google_monitoring_uptime_check_config" "api_health" {
+  count        = var.domain_name != "" ? 1 : 0
   project      = var.project_id
   display_name = "CGS API Health Check"
   timeout      = "10s"

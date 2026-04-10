@@ -12,6 +12,7 @@ resource "google_compute_global_address" "default" {
 # ── Managed SSL Certificate ────────────────────────────────────────────────
 
 resource "google_compute_managed_ssl_certificate" "default" {
+  count   = var.domain_name != "" ? 1 : 0
   project = var.project_id
   name    = "cgs-photos-ssl-cert"
 
@@ -191,17 +192,19 @@ resource "google_compute_url_map" "default" {
 # ── HTTPS Proxy + Forwarding Rule ─────────────────────────────────────────
 
 resource "google_compute_target_https_proxy" "default" {
+  count   = var.domain_name != "" ? 1 : 0
   project = var.project_id
   name    = "cgs-photos-https-proxy"
   url_map = google_compute_url_map.default.id
 
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
+  ssl_certificates = [google_compute_managed_ssl_certificate.default[0].id]
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
+  count      = var.domain_name != "" ? 1 : 0
   project    = var.project_id
   name       = "cgs-photos-https-rule"
-  target     = google_compute_target_https_proxy.default.id
+  target     = google_compute_target_https_proxy.default[0].id
   ip_address = google_compute_global_address.default.address
   port_range = "443"
 

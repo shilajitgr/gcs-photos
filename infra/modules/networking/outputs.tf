@@ -5,7 +5,7 @@ output "load_balancer_ip" {
 
 output "ssl_certificate_name" {
   description = "Managed SSL certificate name"
-  value       = google_compute_managed_ssl_certificate.default.name
+  value       = var.domain_name != "" ? google_compute_managed_ssl_certificate.default[0].name : ""
 }
 
 output "security_policy_name" {

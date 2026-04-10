@@ -13,6 +13,11 @@ output "load_balancer_ip" {
   value       = module.networking.load_balancer_ip
 }
 
+output "ssl_provisioned" {
+  description = "Whether SSL/HTTPS resources were provisioned (requires domain_name)"
+  value       = var.domain_name != ""
+}
+
 output "artifact_registry_url" {
   description = "Artifact Registry Docker repository URL"
   value       = module.artifact_registry.repository_url

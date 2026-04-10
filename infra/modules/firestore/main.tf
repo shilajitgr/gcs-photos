@@ -6,7 +6,7 @@ resource "google_firestore_database" "main" {
   provider    = google-beta
   project     = var.project_id
   name        = "(default)"
-  location_id = var.region
+  location_id = var.firestore_location
   type        = "FIRESTORE_NATIVE"
 
   concurrency_mode            = "OPTIMISTIC"

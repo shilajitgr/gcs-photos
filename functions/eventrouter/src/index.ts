@@ -27,20 +27,21 @@ interface PhotoUploadMessage {
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 /**
- * Extract the user ID from the bucket name.
+ * Extract the user ID from the GCS object path.
  *
- * Convention: buckets are named `cgs-photos-<userId>` (or similar).
+ * Convention: objects are stored at `originals/{userId}/{fileName}`.
  * Falls back to the object-level `userId` custom metadata if set,
  * then to "unknown".
  */
-function extractUserId(bucketName: string, metadata?: Record<string, string>): string {
+function extractUserId(objectPath: string, metadata?: Record<string, string>): string {
   if (metadata?.userId) {
     return metadata.userId;
   }
 
-  const match = bucketName.match(/^cgs-photos-(.+)$/);
-  if (match) {
-    return match[1];
+  // Object path format: originals/{userId}/{fileName}
+  const parts = objectPath.split("/");
+  if (parts.length >= 3 && parts[0] === "originals" && parts[1]) {
+    return parts[1];
   }
 
   return "unknown";
@@ -83,7 +84,7 @@ cloudEvent("eventRouter", async (event: CloudEvent<GcsObjectData>) => {
     return;
   }
 
-  const userId = extractUserId(bucket, metadata);
+  const userId = extractUserId(objectPath, metadata);
 
   const message: PhotoUploadMessage = {
     bucketName: bucket,

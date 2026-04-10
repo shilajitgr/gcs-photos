@@ -20,8 +20,9 @@ variable "environment" {
 }
 
 variable "domain_name" {
-  description = "Domain name for the application (e.g. photos.example.com)"
+  description = "Domain name for the application (e.g. photos.example.com). Leave empty to skip SSL/CDN provisioning."
   type        = string
+  default     = ""
 }
 
 variable "api_image" {
@@ -37,6 +38,12 @@ variable "processing_image" {
 variable "proxy_image" {
   description = "Container image for the image proxy service (e.g. us-central1-docker.pkg.dev/project/repo/proxy:latest)"
   type        = string
+}
+
+variable "firestore_location" {
+  description = "Firestore database location (cannot change after creation)"
+  type        = string
+  default     = "us-central1"
 }
 
 variable "notification_email" {
