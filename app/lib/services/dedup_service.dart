@@ -30,13 +30,7 @@ class DedupService {
   ///
   /// The file is never loaded fully into memory.
   Future<String> computeContentHash(File file) async {
-    var digest = sha256.convert(<int>[]);
-    final stream = file.openRead();
-    final chunks = <int>[];
-    await for (final chunk in stream) {
-      chunks.addAll(chunk);
-    }
-    digest = sha256.convert(chunks);
+    final digest = await sha256.bind(file.openRead()).first;
     return digest.toString();
   }
 

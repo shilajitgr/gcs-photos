@@ -18,11 +18,14 @@ dependencies:
   # Routing
   go_router: ^14.2.0
 
-  # Local database (Drift / SQLite)
+  # Local database (Drift / SQLite with SQLCipher encryption)
   drift: ^2.18.0
-  sqlite3_flutter_libs: ^0.5.21
+  sqlcipher_flutter_libs: ^0.5.6
   path_provider: ^2.1.3
   path: ^1.9.0
+
+  # Secure storage for DB passphrase (Keychain / Keystore)
+  flutter_secure_storage: ^9.2.2
 
   # Firebase
   firebase_core: ^3.1.0
