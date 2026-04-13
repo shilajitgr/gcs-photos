@@ -61,13 +61,13 @@ func (h *ProxyHandler) ServeThumbnail(w http.ResponseWriter, r *http.Request) {
 		contentType = detectContentType(fileName)
 	}
 
+	etag := fmt.Sprintf(`"%08x"`, reader.Attrs.CRC32C)
 	w.Header().Set("Content-Type", contentType)
 	w.Header().Set("Cache-Control", h.cfg.CacheControlThumb)
-	w.Header().Set("ETag", fmt.Sprintf(`"%s"`, reader.Attrs.CRC32C))
+	w.Header().Set("ETag", etag)
 
 	// Support conditional requests
 	if match := r.Header.Get("If-None-Match"); match != "" {
-		etag := fmt.Sprintf(`"%s"`, reader.Attrs.CRC32C)
 		if match == etag {
 			w.WriteHeader(http.StatusNotModified)
 			return
@@ -79,7 +79,7 @@ func (h *ProxyHandler) ServeThumbnail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	io.Copy(w, reader)
+	_, _ = io.Copy(w, reader)
 }
 
 // ResizeOnDemand reads an original from GCS, resizes it, and returns the result.
@@ -154,7 +154,7 @@ func (h *ProxyHandler) ResizeOnDemand(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", h.cfg.CacheControlResize)
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(resized)
+	_, _ = w.Write(resized)
 }
 
 func detectContentType(fileName string) string {
