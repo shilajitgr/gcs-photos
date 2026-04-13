@@ -34,6 +34,7 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           working-directory: proxy
+          args: --timeout=5m
 
   test:
     name: Test
